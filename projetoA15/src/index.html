@@ -1,15 +1,38 @@
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ficha Dark Souls</title>
-    <link rel="stylesheet" href="/dist/output.css">
+    <link rel="stylesheet" href="./dist/output.css">
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-gray-300 text-yellow-400 text-lg">
     <header>
         <section>
+            <div id="resultado" class="bg-gray-200 p-4 rounded-lg shadow text-black font-mono">
+            </div>
+
+            <script>
+                let Nome = "gaba";
+                let idade = 30;
+                let str = "10";
+                let soma = 2 + 3;
+                let mult = 4 * 2; 
+                let testeteste = str + idade;
+
+                let output = "";
+                output += "Nome: " + Nome + "<br>";
+                output += "Idade: " + idade + "<br>";
+                output += "Soma: " + soma + "<br>";
+                output += "Multiplicação: " + mult + "<br>";
+                output += "Teste com string: " + str + idade + "<br>";
+
+                document.getElementById("resultado").innerHTML = output;
+            </script>
+
+
             <div>
                 <p>Nome do Personagem</p>
                 <input type="text">
@@ -98,7 +121,8 @@
 
         <section>
             <h2>História</h2>
-            <textarea cols="30" rows="20" placeholder="Relate a história de seu personagem, origens e motivações..."></textarea>
+            <textarea cols="30" rows="20"
+                placeholder="Relate a história de seu personagem, origens e motivações..."></textarea>
         </section>
     </main>
 
@@ -112,7 +136,10 @@
                 <h3>Feitiços / Milagres / Piromancias</h3>
                 <textarea cols="40" rows="8" placeholder="Descreva as magias conhecidas"></textarea>
             </div>
+
+
         </section>
     </footer>
 </body>
+
 </html>
