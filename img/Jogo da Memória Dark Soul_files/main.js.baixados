@@ -1,0 +1,113 @@
+// Variables
+
+// Factory function to generate image URLs
+function urlBuilder(number) {
+    // Turning the number into a string
+    number += "";
+    // Adding 0 to the left of small numbers
+    number = number.padStart(2, '0');
+    
+    return `images/heros/card${number}.jpeg`;
+}
+
+// Object instances
+let card = new CardManager(urlBuilder);
+let board = new BoardManager("board", 50, card);
+
+// Dom elements
+let menu = document.getElementById('menu');
+let select = document.getElementById('numCards');
+let start = document.getElementById('start');
+
+// Configuring the menu with options (16, 36, ..., 100 cards)
+for (let i = 4; i <= 10; i += 2) {
+    let n = i * i; // Get i² (16, 36, 64, 100)
+    let op = document.createElement('option');
+    op.value = n;
+    op.innerHTML = n;
+    select.appendChild(op);
+}
+
+// Event listeners for start button and game logic
+start.addEventListener('click', () => {
+    menu.classList.add('hidden');              // Hide the menu
+    board.node.classList.remove('hidden');    // Show the board
+    board.fill(select.value);                  // Fill the board with cards
+});
+
+board.node.addEventListener('click', () => {
+    if (board.check()) { // Check if the game condition is met
+        setTimeout(() => {
+            menu.classList.remove('hidden');   // Show the menu again
+            board.node.classList.add('hidden'); // Hide the board
+        }, 2000);
+    }
+});
+
+// ==== Classe cardManager corrigida ====
+
+class CardManager {
+    flippedCards = new Set();  // Set to track flipped cards
+    urlFactory;
+
+    constructor(factory) {  // Constructor to initialize the URL factory function
+        this.urlFactory = factory;
+    }
+
+    gen(heroNumber) {
+        let template = document.getElementById("cardTemplate");
+        let clone = template.content.cloneNode(true);  // Clone the template content
+
+        clone.children[0].addEventListener('click', event => this.onclick(event));  // Add event listener to flip card
+        return clone;
+    }
+
+    onclick(event) {
+        console.log("Card clicked:", event.target);
+        // Implement card flipping logic here
+    }
+}
+
+// ==== Classe BoardManager corrigida ====
+
+class BoardManager {
+    cardManager;  // Object to manipulate cards inside the board
+    node;         // DOM element referring to the board
+    numImgs;      // Number of different images in the library
+    curNumCards;  // Current number of cards on the board
+
+    constructor(id, numImgs, cardManager) {
+        this.node = document.getElementById(id);  // Get the board node using the received id
+        this.numImgs = numImgs;
+        this.cardManager = cardManager;
+    }
+
+    // Clear the board by removing all cards
+    clear() {
+        this.node.innerHTML = "";
+    }
+
+    // Add the received number of cards to the board
+    fill(numberCards) {
+        // Check if there are enough images available
+        if (numberCards > 2 * this.numImgs) {
+            console.error(`Error: Not enough images for ${numberCards} cards.`);
+            // Adjust the number of cards to the available images
+            numberCards = 2 * this.numImgs;
+        }
+
+        this.clear(); // Reset the board
+        this.addCard(this.cardManager.gen(1)); // Add one card to the board
+    }
+
+    // Add one card to the board
+    addCard(card) {
+        this.node.appendChild(card); // Append card to the board
+    }
+
+    // Example of a 'check' function that may be used to check game progress
+    check() {
+        // Placeholder for checking if game condition is met
+        return true;  // Modify with actual game logic
+    }
+}
